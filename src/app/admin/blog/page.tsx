@@ -141,8 +141,11 @@ export default function AdminBlogPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-neutral-600 mb-1">Titel *</label>
+              <label htmlFor="blog-title" className="block text-xs font-medium text-neutral-600 mb-1">Titel *</label>
               <input
+                id="blog-title"
+                name="title"
+                autoComplete="off"
                 required
                 value={form.title}
                 onChange={(e) => handleTitleChange(e.target.value)}
@@ -152,8 +155,12 @@ export default function AdminBlogPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-neutral-600 mb-1">Slug (URL)</label>
+              <label htmlFor="blog-slug" className="block text-xs font-medium text-neutral-600 mb-1">Slug (URL)</label>
               <input
+                id="blog-slug"
+                name="slug"
+                autoComplete="off"
+                spellCheck={false}
                 required
                 value={form.slug}
                 onChange={(e) => setForm({ ...form, slug: e.target.value })}
@@ -163,28 +170,32 @@ export default function AdminBlogPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-neutral-600 mb-1">
+              <label htmlFor="blog-excerpt" className="block text-xs font-medium text-neutral-600 mb-1">
                 Zusammenfassung (Excerpt)
               </label>
               <textarea
+                id="blog-excerpt"
+                name="excerpt"
                 rows={2}
                 value={form.excerpt}
                 onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                placeholder="Kurze Zusammenfassung fuer die Blog-Uebersicht..."
+                placeholder="Kurze Zusammenfassung für die Blog-Übersicht…"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-neutral-600 mb-1">
+              <label htmlFor="blog-content" className="block text-xs font-medium text-neutral-600 mb-1">
                 Inhalt (Markdown)
               </label>
               <textarea
+                id="blog-content"
+                name="content"
                 rows={18}
                 value={form.content}
                 onChange={(e) => setForm({ ...form, content: e.target.value })}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y font-mono"
-                placeholder="## Abschnitt&#10;&#10;Schreib deinen Beitrag hier in Markdown..."
+                placeholder="## Abschnitt&#10;&#10;Schreib deinen Beitrag hier in Markdown…"
               />
               <p className="text-xs text-neutral-400 mt-1">
                 Markdown wird unterstuetzt: **fett**, *kursiv*, ## Ueberschrift, - Listen
@@ -214,7 +225,7 @@ export default function AdminBlogPage() {
                 disabled={loading}
                 className="bg-neutral-900 hover:bg-neutral-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors disabled:opacity-50"
               >
-                {loading ? 'Wird gespeichert...' : 'Speichern'}
+                {loading ? 'Wird gespeichert…' : 'Speichern'}
               </button>
               <button
                 type="button"

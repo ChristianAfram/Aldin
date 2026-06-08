@@ -11,7 +11,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
   return (
     <>
       {!isAdmin && <Navbar />}
-      <main>{children}</main>
+      <main id="main" tabIndex={-1} className="outline-none">{children}</main>
       {!isAdmin && <Footer />}
     </>
   )

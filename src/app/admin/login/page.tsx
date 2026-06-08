@@ -44,11 +44,16 @@ export default function AdminLoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1.5">
+              <label htmlFor="login-email" className="block text-sm font-medium text-neutral-700 mb-1.5">
                 E-Mail
               </label>
               <input
+                id="login-email"
+                name="email"
                 type="email"
+                autoComplete="username"
+                inputMode="email"
+                spellCheck={false}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -57,11 +62,14 @@ export default function AdminLoginPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1.5">
+              <label htmlFor="login-password" className="block text-sm font-medium text-neutral-700 mb-1.5">
                 Passwort
               </label>
               <input
+                id="login-password"
+                name="password"
                 type="password"
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -79,7 +87,7 @@ export default function AdminLoginPage() {
               disabled={loading}
               className="w-full bg-neutral-900 hover:bg-neutral-700 text-white font-semibold py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
             >
-              {loading ? 'Wird eingeloggt...' : 'Einloggen'}
+              {loading ? 'Wird eingeloggt…' : 'Einloggen'}
             </button>
           </form>
         </div>

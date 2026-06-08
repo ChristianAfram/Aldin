@@ -100,8 +100,11 @@ export default function AdminProduktePage() {
           </h2>
           <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
             <div className="col-span-2 sm:col-span-1">
-              <label className="block text-xs font-medium text-neutral-600 mb-1">Name *</label>
+              <label htmlFor="product-name" className="block text-xs font-medium text-neutral-600 mb-1">Name *</label>
               <input
+                id="product-name"
+                name="name"
+                autoComplete="off"
                 required
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -110,8 +113,11 @@ export default function AdminProduktePage() {
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <label className="block text-xs font-medium text-neutral-600 mb-1">Kategorie</label>
+              <label htmlFor="product-category" className="block text-xs font-medium text-neutral-600 mb-1">Kategorie</label>
               <input
+                id="product-category"
+                name="category"
+                autoComplete="off"
                 value={form.category}
                 onChange={(e) => setForm({ ...form, category: e.target.value })}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -119,8 +125,11 @@ export default function AdminProduktePage() {
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <label className="block text-xs font-medium text-neutral-600 mb-1">Preis</label>
+              <label htmlFor="product-price" className="block text-xs font-medium text-neutral-600 mb-1">Preis</label>
               <input
+                id="product-price"
+                name="price"
+                autoComplete="off"
                 value={form.price}
                 onChange={(e) => setForm({ ...form, price: e.target.value })}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -128,15 +137,17 @@ export default function AdminProduktePage() {
               />
             </div>
             <div className="col-span-2">
-              <label className="block text-xs font-medium text-neutral-600 mb-1">
+              <label htmlFor="product-description" className="block text-xs font-medium text-neutral-600 mb-1">
                 Beschreibung
               </label>
               <textarea
+                id="product-description"
+                name="description"
                 rows={3}
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                placeholder="Kurze Beschreibung des Produkts..."
+                placeholder="Kurze Beschreibung des Produkts…"
               />
             </div>
 
@@ -152,7 +163,7 @@ export default function AdminProduktePage() {
                 disabled={loading}
                 className="bg-neutral-900 hover:bg-neutral-700 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors disabled:opacity-50"
               >
-                {loading ? 'Wird gespeichert...' : editId ? 'Aenderungen speichern' : 'Produkt hinzufuegen'}
+                {loading ? 'Wird gespeichert…' : editId ? 'Aenderungen speichern' : 'Produkt hinzufuegen'}
               </button>
               {editId && (
                 <button

@@ -25,7 +25,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-200 ${
+      className={`sticky top-0 z-50 transition-[background-color,border-color,box-shadow] duration-200 ${
         scrolled
           ? 'bg-white/96 backdrop-blur-md border-b border-warm-200 shadow-brand-sm'
           : 'bg-white/95 backdrop-blur-sm border-b border-warm-200'
@@ -69,16 +69,19 @@ export default function Navbar() {
           onClick={() => setOpen(!open)}
           aria-label={open ? 'Menü schließen' : 'Menü öffnen'}
           aria-expanded={open}
+          aria-controls="mobile-menu"
         >
-          <span className={`block w-5 h-0.5 bg-warm-800 mb-1.5 transition-all duration-200 ${open ? 'rotate-45 translate-y-2' : ''}`} />
-          <span className={`block w-5 h-0.5 bg-warm-800 mb-1.5 transition-all duration-200 ${open ? 'opacity-0' : ''}`} />
-          <span className={`block w-5 h-0.5 bg-warm-800 transition-all duration-200 ${open ? '-rotate-45 -translate-y-2' : ''}`} />
+          <span className={`block w-5 h-0.5 bg-warm-800 mb-1.5 transition-[transform,opacity] duration-200 ${open ? 'rotate-45 translate-y-2' : ''}`} />
+          <span className={`block w-5 h-0.5 bg-warm-800 mb-1.5 transition-[transform,opacity] duration-200 ${open ? 'opacity-0' : ''}`} />
+          <span className={`block w-5 h-0.5 bg-warm-800 transition-[transform,opacity] duration-200 ${open ? '-rotate-45 -translate-y-2' : ''}`} />
         </button>
       </div>
 
       {/* Mobile menu */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-200 ${
+        id="mobile-menu"
+        {...(!open ? ({ inert: '' } as any) : {})}
+        className={`md:hidden overflow-hidden transition-[max-height] duration-200 ${
           open ? 'max-h-96' : 'max-h-0'
         }`}
       >

@@ -78,7 +78,7 @@ export default function HomePage() {
               href="#ablauf"
               className="inline-flex items-center justify-center px-8 py-4 bg-warm-100 hover:bg-warm-200 text-warm-800 font-semibold rounded-xl transition-colors text-base"
             >
-              So funktioniert's
+              So funktioniert’s
               <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
               </svg>
@@ -148,7 +148,7 @@ export default function HomePage() {
                 desc: 'Keine Grammatikfehler, perfekte Zeichensetzung und konsistente Formatierung.',
               },
             ].map((item) => (
-              <div key={item.title} className="card p-7 group hover:border-brand-200 cursor-pointer">
+              <div key={item.title} className="card p-7 group hover:border-brand-200">
                 <div className="w-12 h-12 bg-brand-50 text-brand-600 rounded-xl flex items-center justify-center mb-5 group-hover:bg-brand-600 group-hover:text-white transition-colors">
                   <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
                     {item.icon}

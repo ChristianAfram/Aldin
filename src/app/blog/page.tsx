@@ -54,8 +54,8 @@ export default async function BlogPage() {
           ) : (
             <div className="grid gap-6">
               {posts.map((post) => (
-                <Link href={`/blog/${post.slug}`} key={post.id} className="group outline-none">
-                  <article className="card p-6 sm:p-8 bg-white hover:border-brand-200 transition-all cursor-pointer h-full">
+                <Link href={`/blog/${post.slug}`} key={post.id} className="group block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2">
+                  <article className="card p-6 sm:p-8 bg-white hover:border-brand-200 transition-[border-color,box-shadow] h-full">
                     <p className="text-xs font-medium uppercase tracking-wider text-warm-400 mb-3">
                       {formatDate(post.created_at)}
                     </p>

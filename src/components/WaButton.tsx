@@ -7,6 +7,7 @@ type WaButtonProps = {
   className?: string
   variant?: 'default' | 'white'
   id?: string
+  ariaLabel?: string
 }
 
 const sizeClasses = {
@@ -27,6 +28,7 @@ export default function WaButton({
   className = '',
   variant = 'default',
   id,
+  ariaLabel,
 }: WaButtonProps) {
   return (
     <a
@@ -34,10 +36,11 @@ export default function WaButton({
       target="_blank"
       rel="noopener noreferrer"
       id={id}
+      aria-label={ariaLabel || (label ? undefined : 'Auf WhatsApp anfragen')}
       className={`
         inline-flex items-center justify-center gap-2
         font-semibold rounded-xl
-        transition-all duration-200
+        transition-[transform,box-shadow,background-color,color] duration-200
         ${sizeClasses[size]}
         ${variantClasses[variant]}
         ${fullWidth ? 'w-full' : ''}
