@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export const revalidate = 0 // always fetch fresh from local JSON DB
 
 export default async function ProduktePage() {
-  let activeProducts = []
+  let activeProducts: ReturnType<typeof products.findActive> = []
   try {
     activeProducts = products.findActive()
   } catch {
