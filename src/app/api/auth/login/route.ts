@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import bcrypt from 'bcryptjs'
-import { adminUsers } from '@/lib/db'
 import { createToken } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
@@ -11,29 +9,27 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'E-Mail und Passwort erforderlich.' }, { status: 400 })
     }
 
-    const user = adminUsers.findByEmail(email)
+    const adminEmail = process.env.ADMIN_EMAIL
+    const adminPassword = process.env.ADMIN_PASSWORD
 
-    if (!user) {
-      return NextResponse.json({ error: 'Ungueltige Anmeldedaten.' }, { status: 401 })
+    if (!adminEmail || !adminPassword) {
+      return NextResponse.json({ error: 'Admin nicht konfiguriert.' }, { status: 500 })
     }
 
-    const valid = await bcrypt.compare(password, user.password_hash)
-
-    if (!valid) {
-      return NextResponse.json({ error: 'Ungueltige Anmeldedaten.' }, { status: 401 })
+    if (email !== adminEmail || password !== adminPassword) {
+      return NextResponse.json({ error: 'Ungültige Anmeldedaten.' }, { status: 401 })
     }
 
-    const token = await createToken(user.id, user.email)
+    const token = await createToken(1, email)
 
     const response = NextResponse.json({ ok: true })
     response.cookies.set('auth-token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      maxAge: 60 * 60 * 24 * 7,
       path: '/',
     })
-
     return response
   } catch (err) {
     console.error(err)
