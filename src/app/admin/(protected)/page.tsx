@@ -12,20 +12,20 @@ export default async function AdminDashboard() {
     blogCount = allPosts.length
     publishedCount = allPosts.filter((p) => p.published).length
   } catch {
-    // DB not yet initialized
+    // DB nicht initialisiert
   }
 
   return (
     <AdminShell>
       <div className="max-w-3xl">
         <h1 className="text-2xl font-bold tracking-tight mb-1">Dashboard</h1>
-        <p className="text-neutral-500 text-sm mb-8">Uebersicht deiner Inhalte</p>
+        <p className="text-neutral-500 text-sm mb-8">Übersicht deiner Inhalte</p>
 
         <div className="grid grid-cols-3 gap-4 mb-10">
           {[
             { label: 'Aktive Produkte', value: productCount },
-            { label: 'Blog-Beitraege gesamt', value: blogCount },
-            { label: 'Veroeffentlicht', value: publishedCount },
+            { label: 'Blog-Beiträge gesamt', value: blogCount },
+            { label: 'Veröffentlicht', value: publishedCount },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -50,7 +50,7 @@ export default async function AdminDashboard() {
             className="bg-white border border-gray-200 rounded-xl p-5 hover:border-blue-300 transition-colors"
           >
             <p className="font-semibold mb-1">Blog verwalten</p>
-            <p className="text-xs text-neutral-500">Beitraege erstellen und veroeffentlichen</p>
+            <p className="text-xs text-neutral-500">Beiträge erstellen und veröffentlichen</p>
           </a>
         </div>
       </div>

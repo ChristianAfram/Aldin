@@ -72,7 +72,7 @@ export default function AdminProduktePage() {
   }
 
   async function deleteProduct(id: number) {
-    if (!confirm('Produkt wirklich loeschen?')) return
+    if (!confirm('Produkt wirklich löschen?')) return
     await fetch('/api/products', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
@@ -93,7 +93,7 @@ export default function AdminProduktePage() {
           </div>
         </div>
 
-        {/* Form */}
+        {/* Formular */}
         <div className="bg-white border border-gray-200 rounded-xl p-6 mb-8">
           <h2 className="font-semibold mb-4">
             {editId ? 'Produkt bearbeiten' : 'Neues Produkt'}
@@ -163,7 +163,7 @@ export default function AdminProduktePage() {
                 disabled={loading}
                 className="bg-neutral-900 hover:bg-neutral-700 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors disabled:opacity-50"
               >
-                {loading ? 'Wird gespeichert…' : editId ? 'Aenderungen speichern' : 'Produkt hinzufuegen'}
+                {loading ? 'Wird gespeichert…' : editId ? 'Änderungen speichern' : 'Produkt hinzufügen'}
               </button>
               {editId && (
                 <button
@@ -178,7 +178,7 @@ export default function AdminProduktePage() {
           </form>
         </div>
 
-        {/* Table */}
+        {/* Tabelle */}
         <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
           {products.length === 0 ? (
             <div className="text-center py-12 text-neutral-400 text-sm">
@@ -225,7 +225,7 @@ export default function AdminProduktePage() {
                           onClick={() => deleteProduct(product.id)}
                           className="text-xs text-red-500 hover:underline"
                         >
-                          Loeschen
+                          Löschen
                         </button>
                       </div>
                     </td>

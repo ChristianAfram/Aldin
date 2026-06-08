@@ -6,10 +6,10 @@ import { usePathname } from 'next/navigation'
 import { WA_LINK } from '@/lib/config'
 
 const navLinks = [
-  { href: '/',                      label: 'Home' },
-  { href: '/produkte',              label: 'Produkte' },
-  { href: '/bewerbungscoach',       label: 'Bewerbungscoach' },
-  { href: '/blog',                  label: 'Blog' },
+  { href: '/',                label: 'Lebenslauf erstellen' },
+  { href: '/bewerbungscoach', label: 'Bewerbungscoach' },
+  { href: '/produkte',        label: 'Produkte' },
+  { href: '/blog',            label: 'Blog' },
 ]
 
 export default function Navbar() {
@@ -25,10 +25,8 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-[background-color,border-color,box-shadow] duration-200 ${
-        scrolled
-          ? 'bg-white/96 backdrop-blur-md border-b border-warm-200 shadow-brand-sm'
-          : 'bg-white/95 backdrop-blur-sm border-b border-warm-200'
+      className={`sticky top-0 z-50 bg-white border-b border-warm-200 transition-shadow duration-200 ${
+        scrolled ? 'shadow-brand-sm' : ''
       }`}
     >
       <div className="max-w-5xl mx-auto px-5 h-16 flex items-center justify-between">

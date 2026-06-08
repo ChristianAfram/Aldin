@@ -114,7 +114,7 @@ export default function AdminBlogPage() {
   }
 
   async function deletePost(id: number) {
-    if (!confirm('Beitrag wirklich loeschen?')) return
+    if (!confirm('Beitrag wirklich löschen?')) return
     await fetch('/api/blog', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
@@ -132,7 +132,7 @@ export default function AdminBlogPage() {
               onClick={() => setView('list')}
               className="text-sm text-neutral-500 hover:text-neutral-800"
             >
-              ← Zurueck
+              ← Zurück
             </button>
             <h1 className="text-xl font-bold tracking-tight">
               {editId ? 'Beitrag bearbeiten' : 'Neuer Beitrag'}
@@ -198,7 +198,7 @@ export default function AdminBlogPage() {
                 placeholder="## Abschnitt&#10;&#10;Schreib deinen Beitrag hier in Markdown…"
               />
               <p className="text-xs text-neutral-400 mt-1">
-                Markdown wird unterstuetzt: **fett**, *kursiv*, ## Ueberschrift, - Listen
+                Markdown wird unterstützt: **fett**, *kursiv*, ## Überschrift, - Listen
               </p>
             </div>
 
@@ -211,7 +211,7 @@ export default function AdminBlogPage() {
                 className="rounded"
               />
               <label htmlFor="published" className="text-sm font-medium">
-                Sofort veroeffentlichen
+                Sofort veröffentlichen
               </label>
             </div>
 
@@ -248,7 +248,7 @@ export default function AdminBlogPage() {
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Blog</h1>
             <p className="text-sm text-neutral-500 mt-0.5">
-              Beitraege verwalten und veroeffentlichen
+              Beiträge verwalten und veröffentlichen
             </p>
           </div>
           <button
@@ -262,7 +262,7 @@ export default function AdminBlogPage() {
         <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
           {posts.length === 0 ? (
             <div className="text-center py-12 text-neutral-400 text-sm">
-              Noch keine Beitraege.
+              Noch keine Beiträge.
             </div>
           ) : (
             <table className="w-full text-sm">
@@ -290,7 +290,7 @@ export default function AdminBlogPage() {
                             : 'bg-neutral-100 text-neutral-500 hover:bg-neutral-200'
                         }`}
                       >
-                        {post.published ? 'Veroeffentlicht' : 'Entwurf'}
+                        {post.published ? 'Veröffentlicht' : 'Entwurf'}
                       </button>
                     </td>
                     <td className="px-4 py-3 text-right">
@@ -305,7 +305,7 @@ export default function AdminBlogPage() {
                           onClick={() => deletePost(post.id)}
                           className="text-xs text-red-500 hover:underline"
                         >
-                          Loeschen
+                          Löschen
                         </button>
                       </div>
                     </td>

@@ -2,16 +2,14 @@ import Link from 'next/link'
 import { cities } from '@/lib/cities'
 import { WA_LINK } from '@/lib/config'
 
-const topCities    = cities.slice(0, 6)
-const moreCities   = cities.slice(6)
-
 export default function Footer() {
   return (
     <footer className="border-t border-warm-200 bg-warm-900 text-warm-300">
       <div className="max-w-5xl mx-auto px-5 pt-14 pb-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+
           {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
+          <div className="col-span-2 lg:col-span-1">
             <p className="font-display font-black text-2xl tracking-tighter text-white mb-1">
               Aldin<span className="text-brand-400">.</span>
             </p>
@@ -41,13 +39,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/produkte" className="text-sm text-warm-400 hover:text-white transition-colors">
-                  Produkte & Preise
+                <Link href="/bewerbungscoach" className="text-sm text-warm-400 hover:text-white transition-colors">
+                  Bewerbungscoach
                 </Link>
               </li>
               <li>
-                <Link href="/bewerbungscoach" className="text-sm text-warm-400 hover:text-white transition-colors">
-                  Bewerbungscoach
+                <Link href="/produkte" className="text-sm text-warm-400 hover:text-white transition-colors">
+                  Produkte &amp; Preise
                 </Link>
               </li>
               <li>
@@ -58,11 +56,11 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Cities 1 */}
+          {/* Lebenslauf Städte */}
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-warm-500 mb-4">Städte</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-warm-500 mb-4">Lebenslauf erstellen</p>
             <ul className="space-y-3">
-              {topCities.map((city) => (
+              {cities.map((city) => (
                 <li key={city.slug}>
                   <Link
                     href={`/lebenslauf-erstellen/${city.slug}`}
@@ -75,14 +73,14 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Cities 2 */}
+          {/* Bewerbungscoach Städte */}
           <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-warm-500 mb-4">Weitere Städte</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-warm-500 mb-4">Bewerbungscoach</p>
             <ul className="space-y-3">
-              {moreCities.map((city) => (
+              {cities.map((city) => (
                 <li key={city.slug}>
                   <Link
-                    href={`/lebenslauf-erstellen/${city.slug}`}
+                    href={`/bewerbungscoach/${city.slug}`}
                     className="text-sm text-warm-400 hover:text-white transition-colors"
                   >
                     {city.name}
@@ -91,6 +89,7 @@ export default function Footer() {
               ))}
             </ul>
           </div>
+
         </div>
 
         {/* Bottom */}
