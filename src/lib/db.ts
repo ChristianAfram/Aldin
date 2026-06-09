@@ -1,13 +1,9 @@
 /**
- * Local JSON "database" – used instead of Neon/PostgreSQL for local development.
- * Stores data in data/local.json at the project root.
- * Replace this file with the Neon version when deploying to production.
+ * Neon PostgreSQL data layer (HTTP driver, serverless-safe for Vercel).
+ * Requires DATABASE_URL. Tables are created by `npm run seed` (scripts/seed.ts).
  */
 
-import fs from 'fs'
-import path from 'path'
-
-const DB_PATH = path.join(process.cwd(), 'data', 'local.json')
+import { neon } from '@neondatabase/serverless'
 
 export type Product = {
   id: number
@@ -37,179 +33,212 @@ export type AdminUser = {
   created_at: string
 }
 
-type DbData = {
-  products: Product[]
-  blog_posts: BlogPost[]
-  admin_users: AdminUser[]
-  _sequences: { products: number; blog_posts: number; admin_users: number }
-}
+type Row = Record<string, unknown>
 
-function ensureDbFile(): DbData {
-  const dir = path.dirname(DB_PATH)
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true })
-  }
-  if (!fs.existsSync(DB_PATH)) {
-    const initial: DbData = {
-      products: [],
-      blog_posts: [],
-      admin_users: [],
-      _sequences: { products: 0, blog_posts: 0, admin_users: 0 },
+let client: ReturnType<typeof neon> | null = null
+
+function sql() {
+  if (!client) {
+    const url = process.env.DATABASE_URL
+    if (!url) {
+      throw new Error('DATABASE_URL ist nicht gesetzt.')
     }
-    fs.writeFileSync(DB_PATH, JSON.stringify(initial, null, 2), 'utf-8')
-    return initial
+    client = neon(url)
   }
-  return JSON.parse(fs.readFileSync(DB_PATH, 'utf-8')) as DbData
+  return client
 }
 
-function saveDb(data: DbData): void {
-  fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf-8')
+function isoDate(value: unknown): string {
+  return new Date(value as string | Date).toISOString()
 }
 
-function nextId(data: DbData, table: keyof DbData['_sequences']): number {
-  data._sequences[table] += 1
-  return data._sequences[table]
+function isUniqueViolation(err: unknown): boolean {
+  return typeof err === 'object' && err !== null && (err as { code?: string }).code === '23505'
 }
 
-function now(): string {
-  return new Date().toISOString()
+/**
+ * Builds a parameterized UPDATE for the keys present in `data` (undefined
+ * values are skipped, mirroring the previous partial-update semantics).
+ */
+async function updateRow(
+  table: 'products' | 'blog_posts',
+  id: number,
+  data: Record<string, unknown>,
+  extraSet = '',
+): Promise<Row | null> {
+  const keys = Object.keys(data).filter((key) => data[key] !== undefined)
+  if (keys.length === 0 && !extraSet) return null
+  const assignments = keys.map((key, i) => `"${key}" = $${i + 1}`)
+  if (extraSet) assignments.push(extraSet)
+  const params = keys.map((key) => data[key])
+  params.push(id)
+  const rows = (await sql().query(
+    `UPDATE ${table} SET ${assignments.join(', ')} WHERE id = $${params.length} RETURNING *`,
+    params,
+  )) as Row[]
+  return rows[0] ?? null
 }
 
 // ─── Products ────────────────────────────────────────────────────────────────
 
+function mapProduct(row: Row): Product {
+  return {
+    id: row.id as number,
+    name: row.name as string,
+    description: row.description as string,
+    price: row.price as string,
+    category: row.category as string,
+    active: row.active as boolean,
+    created_at: isoDate(row.created_at),
+  }
+}
+
 export const products = {
-  findAll(): Product[] {
-    return ensureDbFile().products.sort(
-      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    )
+  async findAll(): Promise<Product[]> {
+    const rows = (await sql()`SELECT * FROM products ORDER BY created_at DESC, id DESC`) as Row[]
+    return rows.map(mapProduct)
   },
 
-  findActive(): Product[] {
-    return this.findAll().filter((p) => p.active)
+  async findActive(): Promise<Product[]> {
+    const rows =
+      (await sql()`SELECT * FROM products WHERE active ORDER BY created_at DESC, id DESC`) as Row[]
+    return rows.map(mapProduct)
   },
 
-  findById(id: number): Product | undefined {
-    return ensureDbFile().products.find((p) => p.id === id)
+  async findById(id: number): Promise<Product | undefined> {
+    const rows = (await sql()`SELECT * FROM products WHERE id = ${id}`) as Row[]
+    return rows[0] ? mapProduct(rows[0]) : undefined
   },
 
-  create(data: Pick<Product, 'name' | 'description' | 'price' | 'category'>): Product {
-    const db = ensureDbFile()
-    const product: Product = {
-      id: nextId(db, 'products'),
-      name: data.name,
-      description: data.description ?? '',
-      price: data.price ?? '',
-      category: data.category ?? '',
-      active: true,
-      created_at: now(),
-    }
-    db.products.push(product)
-    saveDb(db)
-    return product
+  async create(data: Pick<Product, 'name' | 'description' | 'price' | 'category'>) {
+    const rows = (await sql()`
+      INSERT INTO products (name, description, price, category)
+      VALUES (${data.name}, ${data.description ?? ''}, ${data.price ?? ''}, ${data.category ?? ''})
+      RETURNING *
+    `) as Row[]
+    return mapProduct(rows[0])
   },
 
-  update(id: number, data: Partial<Omit<Product, 'id' | 'created_at'>>): Product | null {
-    const db = ensureDbFile()
-    const idx = db.products.findIndex((p) => p.id === id)
-    if (idx === -1) return null
-    db.products[idx] = { ...db.products[idx], ...data }
-    saveDb(db)
-    return db.products[idx]
+  async update(
+    id: number,
+    data: Partial<Omit<Product, 'id' | 'created_at'>>,
+  ): Promise<Product | null> {
+    const hasChanges = Object.values(data).some((value) => value !== undefined)
+    if (!hasChanges) return (await this.findById(id)) ?? null
+    const row = await updateRow('products', id, data)
+    return row ? mapProduct(row) : null
   },
 
-  delete(id: number): boolean {
-    const db = ensureDbFile()
-    const before = db.products.length
-    db.products = db.products.filter((p) => p.id !== id)
-    saveDb(db)
-    return db.products.length < before
+  async delete(id: number): Promise<boolean> {
+    const rows = (await sql()`DELETE FROM products WHERE id = ${id} RETURNING id`) as Row[]
+    return rows.length > 0
   },
 }
 
 // ─── Blog Posts ───────────────────────────────────────────────────────────────
 
+function mapBlogPost(row: Row): BlogPost {
+  return {
+    id: row.id as number,
+    title: row.title as string,
+    slug: row.slug as string,
+    content: row.content as string,
+    excerpt: row.excerpt as string,
+    published: row.published as boolean,
+    created_at: isoDate(row.created_at),
+    updated_at: isoDate(row.updated_at),
+  }
+}
+
 export const blogPosts = {
-  findAll(): BlogPost[] {
-    return ensureDbFile().blog_posts.sort(
-      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    )
+  async findAll(): Promise<BlogPost[]> {
+    const rows = (await sql()`SELECT * FROM blog_posts ORDER BY created_at DESC, id DESC`) as Row[]
+    return rows.map(mapBlogPost)
   },
 
-  findPublished(): Pick<BlogPost, 'id' | 'title' | 'slug' | 'excerpt' | 'created_at'>[] {
-    return this.findAll()
-      .filter((p) => p.published)
-      .map(({ id, title, slug, excerpt, created_at }) => ({ id, title, slug, excerpt, created_at }))
+  async findPublished(): Promise<
+    Pick<BlogPost, 'id' | 'title' | 'slug' | 'excerpt' | 'created_at'>[]
+  > {
+    const rows = (await sql()`
+      SELECT id, title, slug, excerpt, created_at FROM blog_posts
+      WHERE published ORDER BY created_at DESC, id DESC
+    `) as Row[]
+    return rows.map((row) => ({
+      id: row.id as number,
+      title: row.title as string,
+      slug: row.slug as string,
+      excerpt: row.excerpt as string,
+      created_at: isoDate(row.created_at),
+    }))
   },
 
-  findBySlug(slug: string): BlogPost | undefined {
-    return ensureDbFile().blog_posts.find((p) => p.slug === slug)
+  async findBySlug(slug: string): Promise<BlogPost | undefined> {
+    const rows = (await sql()`SELECT * FROM blog_posts WHERE slug = ${slug}`) as Row[]
+    return rows[0] ? mapBlogPost(rows[0]) : undefined
   },
 
-  findById(id: number): BlogPost | undefined {
-    return ensureDbFile().blog_posts.find((p) => p.id === id)
+  async findById(id: number): Promise<BlogPost | undefined> {
+    const rows = (await sql()`SELECT * FROM blog_posts WHERE id = ${id}`) as Row[]
+    return rows[0] ? mapBlogPost(rows[0]) : undefined
   },
 
-  create(data: Pick<BlogPost, 'title' | 'slug' | 'excerpt' | 'content' | 'published'>): BlogPost {
-    const db = ensureDbFile()
-    if (db.blog_posts.find((p) => p.slug === data.slug)) {
-      throw new Error('UNIQUE_SLUG')
+  async create(data: Pick<BlogPost, 'title' | 'slug' | 'excerpt' | 'content' | 'published'>) {
+    try {
+      const rows = (await sql()`
+        INSERT INTO blog_posts (title, slug, excerpt, content, published)
+        VALUES (${data.title}, ${data.slug}, ${data.excerpt ?? ''}, ${data.content ?? ''}, ${data.published ?? false})
+        RETURNING *
+      `) as Row[]
+      return mapBlogPost(rows[0])
+    } catch (err) {
+      if (isUniqueViolation(err)) throw new Error('UNIQUE_SLUG')
+      throw err
     }
-    const post: BlogPost = {
-      id: nextId(db, 'blog_posts'),
-      title: data.title,
-      slug: data.slug,
-      excerpt: data.excerpt ?? '',
-      content: data.content ?? '',
-      published: data.published ?? false,
-      created_at: now(),
-      updated_at: now(),
+  },
+
+  async update(
+    id: number,
+    data: Partial<Omit<BlogPost, 'id' | 'created_at'>>,
+  ): Promise<BlogPost | null> {
+    try {
+      const row = await updateRow('blog_posts', id, data, '"updated_at" = NOW()')
+      return row ? mapBlogPost(row) : null
+    } catch (err) {
+      if (isUniqueViolation(err)) throw new Error('UNIQUE_SLUG')
+      throw err
     }
-    db.blog_posts.push(post)
-    saveDb(db)
-    return post
   },
 
-  update(id: number, data: Partial<Omit<BlogPost, 'id' | 'created_at'>>): BlogPost | null {
-    const db = ensureDbFile()
-    const idx = db.blog_posts.findIndex((p) => p.id === id)
-    if (idx === -1) return null
-    db.blog_posts[idx] = { ...db.blog_posts[idx], ...data, updated_at: now() }
-    saveDb(db)
-    return db.blog_posts[idx]
-  },
-
-  delete(id: number): boolean {
-    const db = ensureDbFile()
-    const before = db.blog_posts.length
-    db.blog_posts = db.blog_posts.filter((p) => p.id !== id)
-    saveDb(db)
-    return db.blog_posts.length < before
+  async delete(id: number): Promise<boolean> {
+    const rows = (await sql()`DELETE FROM blog_posts WHERE id = ${id} RETURNING id`) as Row[]
+    return rows.length > 0
   },
 }
 
 // ─── Admin Users ──────────────────────────────────────────────────────────────
 
+function mapAdminUser(row: Row): AdminUser {
+  return {
+    id: row.id as number,
+    email: row.email as string,
+    password_hash: row.password_hash as string,
+    created_at: isoDate(row.created_at),
+  }
+}
+
 export const adminUsers = {
-  findByEmail(email: string): AdminUser | undefined {
-    return ensureDbFile().admin_users.find((u) => u.email === email)
+  async findByEmail(email: string): Promise<AdminUser | undefined> {
+    const rows = (await sql()`SELECT * FROM admin_users WHERE email = ${email}`) as Row[]
+    return rows[0] ? mapAdminUser(rows[0]) : undefined
   },
 
-  upsert(email: string, password_hash: string): AdminUser {
-    const db = ensureDbFile()
-    const existing = db.admin_users.findIndex((u) => u.email === email)
-    if (existing !== -1) {
-      db.admin_users[existing].password_hash = password_hash
-      saveDb(db)
-      return db.admin_users[existing]
-    }
-    const user: AdminUser = {
-      id: nextId(db, 'admin_users'),
-      email,
-      password_hash,
-      created_at: now(),
-    }
-    db.admin_users.push(user)
-    saveDb(db)
-    return user
+  async upsert(email: string, password_hash: string): Promise<AdminUser> {
+    const rows = (await sql()`
+      INSERT INTO admin_users (email, password_hash)
+      VALUES (${email}, ${password_hash})
+      ON CONFLICT (email) DO UPDATE SET password_hash = EXCLUDED.password_hash
+      RETURNING *
+    `) as Row[]
+    return mapAdminUser(rows[0])
   },
 }

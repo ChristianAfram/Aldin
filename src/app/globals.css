@@ -17,7 +17,10 @@ body {
 
 /* ── Display headings use Rubik ───────────────────────────────────── */
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: var(--font-rubik), system-ui, sans-serif;
   letter-spacing: -0.04em;
   line-height: 1.05;
@@ -82,8 +85,14 @@ h1, h2, h3, h4 {
 /* ── Floating WA pulse ring ───────────────────────────────────────── */
 
 @keyframes ring-pulse {
-  0%   { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(2.4); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
 }
 
 .wa-ring::before {
@@ -91,7 +100,7 @@ h1, h2, h3, h4 {
   position: absolute;
   inset: 0;
   border-radius: 9999px;
-  background: #25D366;
+  background: #25d366;
   animation: ring-pulse 2.2s ease-out infinite;
   z-index: -1;
 }
@@ -142,7 +151,9 @@ h1, h2, h3, h4 {
 /* ── Reduce motion ────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

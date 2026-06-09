@@ -18,7 +18,7 @@ const sizeClasses = {
 
 const variantClasses = {
   default: 'bg-wa hover:bg-wa-dark text-white shadow-sm hover:shadow-md',
-  white:   'bg-white hover:bg-warm-100 text-brand-700 shadow-sm hover:shadow-md',
+  white: 'bg-white hover:bg-warm-100 text-brand-700 shadow-sm hover:shadow-md',
 }
 
 export default function WaButton({

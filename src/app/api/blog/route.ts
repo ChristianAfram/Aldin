@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { blogPosts as db } from '@/lib/db'
 import { getSession } from '@/lib/auth'
+import { blogCreateSchema, blogUpdateSchema, idSchema, firstIssue } from '@/lib/validation'
 
 function unauthorized() {
   return NextResponse.json({ error: 'Nicht autorisiert.' }, { status: 401 })
@@ -8,12 +9,12 @@ function unauthorized() {
 
 // GET: Public (published only) or Admin (all)
 export async function GET(req: NextRequest) {
-  const all = req.nextUrl.searchParams.get('all')
+  const all = req.nextUrl.searchParams.get('all') === '1'
   const session = all ? await getSession() : null
 
   if (all && !session) return unauthorized()
 
-  const result = all ? db.findAll() : db.findPublished()
+  const result = all ? await db.findAll() : await db.findPublished()
   return NextResponse.json(result)
 }
 
@@ -23,13 +24,12 @@ export async function POST(req: NextRequest) {
   if (!session) return unauthorized()
 
   try {
-    const { title, slug, excerpt, content, published } = await req.json()
-
-    if (!title || !slug) {
-      return NextResponse.json({ error: 'Titel und Slug sind erforderlich.' }, { status: 400 })
+    const parsed = blogCreateSchema.safeParse(await req.json())
+    if (!parsed.success) {
+      return NextResponse.json({ error: firstIssue(parsed.error) }, { status: 400 })
     }
 
-    const post = db.create({ title, slug, excerpt: excerpt || '', content: content || '', published: published ?? false })
+    const post = await db.create(parsed.data)
     return NextResponse.json(post, { status: 201 })
   } catch (err: unknown) {
     if (err instanceof Error && err.message === 'UNIQUE_SLUG') {
@@ -46,19 +46,13 @@ export async function PATCH(req: NextRequest) {
   if (!session) return unauthorized()
 
   try {
-    const { id, title, slug, excerpt, content, published } = await req.json()
-
-    if (!id) {
-      return NextResponse.json({ error: 'ID erforderlich.' }, { status: 400 })
+    const parsed = blogUpdateSchema.safeParse(await req.json())
+    if (!parsed.success) {
+      return NextResponse.json({ error: firstIssue(parsed.error) }, { status: 400 })
     }
+    const { id, ...data } = parsed.data
 
-    const updated = db.update(Number(id), {
-      ...(title !== undefined && { title }),
-      ...(slug !== undefined && { slug }),
-      ...(excerpt !== undefined && { excerpt }),
-      ...(content !== undefined && { content }),
-      ...(published !== undefined && { published }),
-    })
+    const updated = await db.update(id, data)
 
     if (!updated) {
       return NextResponse.json({ error: 'Beitrag nicht gefunden.' }, { status: 404 })
@@ -66,6 +60,9 @@ export async function PATCH(req: NextRequest) {
 
     return NextResponse.json(updated)
   } catch (err) {
+    if (err instanceof Error && err.message === 'UNIQUE_SLUG') {
+      return NextResponse.json({ error: 'Dieser Slug ist bereits vergeben.' }, { status: 409 })
+    }
     console.error(err)
     return NextResponse.json({ error: 'Server-Fehler.' }, { status: 500 })
   }
@@ -77,8 +74,11 @@ export async function DELETE(req: NextRequest) {
   if (!session) return unauthorized()
 
   try {
-    const { id } = await req.json()
-    db.delete(Number(id))
+    const parsed = idSchema.safeParse(await req.json())
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Gültige ID erforderlich.' }, { status: 400 })
+    }
+    await db.delete(parsed.data.id)
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error(err)

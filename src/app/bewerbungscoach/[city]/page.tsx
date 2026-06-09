@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import WaButton from '@/components/WaButton'
 import { cities, getCityBySlug } from '@/lib/cities'
+import JsonLd from '@/components/JsonLd'
+import { SITE_NAME, SITE_URL } from '@/lib/config'
 
 type Props = { params: { city: string } }
 
@@ -18,7 +20,7 @@ export function generateMetadata({ params }: Props): Metadata {
     title: `Bewerbungscoach in ${city.name} – Professionelle Unterstuetzung`,
     description: `Dein Bewerbungscoach in ${city.name}: Professioneller Lebenslauf, Anschreiben und Bewerbungsstrategie fuer den Jobmarkt in ${city.name}. Jetzt kostenlos anfragen.`,
     alternates: {
-      canonical: `https://aldinb.de/bewerbungscoach/${city.slug}`,
+      canonical: `/bewerbungscoach/${city.slug}`,
     },
   }
 }
@@ -29,8 +31,19 @@ export default function CityBewerbungscoachPage({ params }: Props) {
 
   const otherCities = cities.filter((c) => c.slug !== city.slug).slice(0, 6)
 
+  const serviceJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: `Bewerbungscoaching in ${city.name}`,
+    serviceType: 'Bewerbungscoaching',
+    areaServed: { '@type': 'City', name: city.name },
+    provider: { '@type': 'ProfessionalService', name: SITE_NAME, url: SITE_URL },
+    url: `${SITE_URL}/bewerbungscoach/${city.slug}`,
+  }
+
   return (
     <>
+      <JsonLd data={serviceJsonLd} />
       {/* Hero */}
       <section className="pt-16 pb-12 px-5">
         <div className="max-w-3xl mx-auto">

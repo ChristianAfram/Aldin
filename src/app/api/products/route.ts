@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { products as db } from '@/lib/db'
 import { getSession } from '@/lib/auth'
+import { productCreateSchema, productUpdateSchema, idSchema, firstIssue } from '@/lib/validation'
 
 function unauthorized() {
   return NextResponse.json({ error: 'Nicht autorisiert.' }, { status: 401 })
@@ -8,12 +9,12 @@ function unauthorized() {
 
 // GET: Public (active only) or Admin (all)
 export async function GET(req: NextRequest) {
-  const all = req.nextUrl.searchParams.get('all')
+  const all = req.nextUrl.searchParams.get('all') === '1'
   const session = all ? await getSession() : null
 
   if (all && !session) return unauthorized()
 
-  const result = all ? db.findAll() : db.findActive()
+  const result = all ? await db.findAll() : await db.findActive()
   return NextResponse.json(result)
 }
 
@@ -23,13 +24,12 @@ export async function POST(req: NextRequest) {
   if (!session) return unauthorized()
 
   try {
-    const { name, description, price, category } = await req.json()
-
-    if (!name) {
-      return NextResponse.json({ error: 'Name ist erforderlich.' }, { status: 400 })
+    const parsed = productCreateSchema.safeParse(await req.json())
+    if (!parsed.success) {
+      return NextResponse.json({ error: firstIssue(parsed.error) }, { status: 400 })
     }
 
-    const product = db.create({ name, description: description || '', price: price || '', category: category || '' })
+    const product = await db.create(parsed.data)
     return NextResponse.json(product, { status: 201 })
   } catch (err) {
     console.error(err)
@@ -43,19 +43,13 @@ export async function PATCH(req: NextRequest) {
   if (!session) return unauthorized()
 
   try {
-    const { id, name, description, price, category, active } = await req.json()
-
-    if (!id) {
-      return NextResponse.json({ error: 'ID erforderlich.' }, { status: 400 })
+    const parsed = productUpdateSchema.safeParse(await req.json())
+    if (!parsed.success) {
+      return NextResponse.json({ error: firstIssue(parsed.error) }, { status: 400 })
     }
+    const { id, ...data } = parsed.data
 
-    const updated = db.update(Number(id), {
-      ...(name !== undefined && { name }),
-      ...(description !== undefined && { description }),
-      ...(price !== undefined && { price }),
-      ...(category !== undefined && { category }),
-      ...(active !== undefined && { active }),
-    })
+    const updated = await db.update(id, data)
 
     if (!updated) {
       return NextResponse.json({ error: 'Produkt nicht gefunden.' }, { status: 404 })
@@ -74,8 +68,11 @@ export async function DELETE(req: NextRequest) {
   if (!session) return unauthorized()
 
   try {
-    const { id } = await req.json()
-    db.delete(Number(id))
+    const parsed = idSchema.safeParse(await req.json())
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Gültige ID erforderlich.' }, { status: 400 })
+    }
+    await db.delete(parsed.data.id)
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error(err)
