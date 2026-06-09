@@ -29,7 +29,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Titel und Slug sind erforderlich.' }, { status: 400 })
     }
 
-    const post = db.create({ title, slug, excerpt: excerpt || '', content: content || '', published: published ?? false })
+    const post = db.create({
+      title,
+      slug,
+      excerpt: excerpt || '',
+      content: content || '',
+      published: published ?? false,
+    })
     return NextResponse.json(post, { status: 201 })
   } catch (err: unknown) {
     if (err instanceof Error && err.message === 'UNIQUE_SLUG') {

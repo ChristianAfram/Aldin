@@ -95,12 +95,15 @@ export default function AdminProduktePage() {
 
         {/* Formular */}
         <div className="bg-white border border-gray-200 rounded-xl p-6 mb-8">
-          <h2 className="font-semibold mb-4">
-            {editId ? 'Produkt bearbeiten' : 'Neues Produkt'}
-          </h2>
+          <h2 className="font-semibold mb-4">{editId ? 'Produkt bearbeiten' : 'Neues Produkt'}</h2>
           <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
             <div className="col-span-2 sm:col-span-1">
-              <label htmlFor="product-name" className="block text-xs font-medium text-neutral-600 mb-1">Name *</label>
+              <label
+                htmlFor="product-name"
+                className="block text-xs font-medium text-neutral-600 mb-1"
+              >
+                Name *
+              </label>
               <input
                 id="product-name"
                 name="name"
@@ -113,7 +116,12 @@ export default function AdminProduktePage() {
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <label htmlFor="product-category" className="block text-xs font-medium text-neutral-600 mb-1">Kategorie</label>
+              <label
+                htmlFor="product-category"
+                className="block text-xs font-medium text-neutral-600 mb-1"
+              >
+                Kategorie
+              </label>
               <input
                 id="product-category"
                 name="category"
@@ -125,7 +133,12 @@ export default function AdminProduktePage() {
               />
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <label htmlFor="product-price" className="block text-xs font-medium text-neutral-600 mb-1">Preis</label>
+              <label
+                htmlFor="product-price"
+                className="block text-xs font-medium text-neutral-600 mb-1"
+              >
+                Preis
+              </label>
               <input
                 id="product-price"
                 name="price"
@@ -137,7 +150,10 @@ export default function AdminProduktePage() {
               />
             </div>
             <div className="col-span-2">
-              <label htmlFor="product-description" className="block text-xs font-medium text-neutral-600 mb-1">
+              <label
+                htmlFor="product-description"
+                className="block text-xs font-medium text-neutral-600 mb-1"
+              >
                 Beschreibung
               </label>
               <textarea
@@ -163,7 +179,11 @@ export default function AdminProduktePage() {
                 disabled={loading}
                 className="bg-neutral-900 hover:bg-neutral-700 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors disabled:opacity-50"
               >
-                {loading ? 'Wird gespeichert…' : editId ? 'Änderungen speichern' : 'Produkt hinzufügen'}
+                {loading
+                  ? 'Wird gespeichert…'
+                  : editId
+                    ? 'Änderungen speichern'
+                    : 'Produkt hinzufügen'}
               </button>
               {editId && (
                 <button
@@ -181,17 +201,23 @@ export default function AdminProduktePage() {
         {/* Tabelle */}
         <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
           {products.length === 0 ? (
-            <div className="text-center py-12 text-neutral-400 text-sm">
-              Noch keine Produkte.
-            </div>
+            <div className="text-center py-12 text-neutral-400 text-sm">Noch keine Produkte.</div>
           ) : (
             <table className="w-full text-sm">
               <thead className="border-b border-gray-200 bg-neutral-50">
                 <tr>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-neutral-500">Name</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-neutral-500">Kategorie</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-neutral-500">Preis</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-neutral-500">Status</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-neutral-500">
+                    Name
+                  </th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-neutral-500">
+                    Kategorie
+                  </th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-neutral-500">
+                    Preis
+                  </th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-neutral-500">
+                    Status
+                  </th>
                   <th className="px-4 py-3" />
                 </tr>
               </thead>

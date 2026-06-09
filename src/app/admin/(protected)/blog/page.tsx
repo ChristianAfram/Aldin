@@ -141,7 +141,12 @@ export default function AdminBlogPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="blog-title" className="block text-xs font-medium text-neutral-600 mb-1">Titel *</label>
+              <label
+                htmlFor="blog-title"
+                className="block text-xs font-medium text-neutral-600 mb-1"
+              >
+                Titel *
+              </label>
               <input
                 id="blog-title"
                 name="title"
@@ -155,7 +160,12 @@ export default function AdminBlogPage() {
             </div>
 
             <div>
-              <label htmlFor="blog-slug" className="block text-xs font-medium text-neutral-600 mb-1">Slug (URL)</label>
+              <label
+                htmlFor="blog-slug"
+                className="block text-xs font-medium text-neutral-600 mb-1"
+              >
+                Slug (URL)
+              </label>
               <input
                 id="blog-slug"
                 name="slug"
@@ -170,7 +180,10 @@ export default function AdminBlogPage() {
             </div>
 
             <div>
-              <label htmlFor="blog-excerpt" className="block text-xs font-medium text-neutral-600 mb-1">
+              <label
+                htmlFor="blog-excerpt"
+                className="block text-xs font-medium text-neutral-600 mb-1"
+              >
                 Zusammenfassung (Excerpt)
               </label>
               <textarea
@@ -185,7 +198,10 @@ export default function AdminBlogPage() {
             </div>
 
             <div>
-              <label htmlFor="blog-content" className="block text-xs font-medium text-neutral-600 mb-1">
+              <label
+                htmlFor="blog-content"
+                className="block text-xs font-medium text-neutral-600 mb-1"
+              >
                 Inhalt (Markdown)
               </label>
               <textarea
@@ -261,16 +277,20 @@ export default function AdminBlogPage() {
 
         <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
           {posts.length === 0 ? (
-            <div className="text-center py-12 text-neutral-400 text-sm">
-              Noch keine Beiträge.
-            </div>
+            <div className="text-center py-12 text-neutral-400 text-sm">Noch keine Beiträge.</div>
           ) : (
             <table className="w-full text-sm">
               <thead className="border-b border-gray-200 bg-neutral-50">
                 <tr>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-neutral-500">Titel</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-neutral-500">Datum</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-neutral-500">Status</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-neutral-500">
+                    Titel
+                  </th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-neutral-500">
+                    Datum
+                  </th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-neutral-500">
+                    Status
+                  </th>
                   <th className="px-4 py-3" />
                 </tr>
               </thead>

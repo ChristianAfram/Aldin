@@ -27,9 +27,11 @@ Aldin is a German-language website (career coaching: Bewerbungscoach, Lebenslauf
 - `npm run dev` — start dev server
 - `npm run build` — production build (also the primary verification step)
 - `npm run seed` — seed the database
-- `npx tsc --noEmit` — type check (no dedicated script exists)
+- `npm run typecheck` — TypeScript check (`tsc --noEmit`)
+- `npm run lint` — ESLint (`next/core-web-vitals` + prettier config)
+- `npm run format` / `npm run format:check` — Prettier (markdown excluded)
 
-There are no `lint` or `test` scripts. Do not claim lint or tests passed; verify changes with `npx tsc --noEmit` and `npm run build`.
+There is no `test` script. Verify changes with `npm run typecheck`, `npm run lint`, and `npm run build`.
 
 ## Conventions
 

@@ -53,12 +53,11 @@ export default function BewerbungscoachPage() {
             Bewerbungscoach
           </p>
           <h1 className="font-display font-black text-5xl md:text-6xl text-warm-900 leading-[1.05] tracking-tightest mb-6">
-            Dein persönlicher{' '}
-            <span className="text-gradient">Bewerbungscoach</span>
+            Dein persönlicher <span className="text-gradient">Bewerbungscoach</span>
           </h1>
           <p className="text-lg md:text-xl text-warm-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Ein guter Bewerbungscoach macht mehr als einen Lebenslauf. Er versteht dich,
-            findet deine Stärken und bringt sie überzeugend auf Papier.
+            Ein guter Bewerbungscoach macht mehr als einen Lebenslauf. Er versteht dich, findet
+            deine Stärken und bringt sie überzeugend auf Papier.
           </p>
           <div className="flex justify-center">
             <WaButton size="lg" />
@@ -77,18 +76,17 @@ export default function BewerbungscoachPage() {
               Was Bewerbungscoaching wirklich bedeutet
             </h2>
             <p className="text-warm-500 leading-relaxed mb-4 text-lg">
-              Viele Leute schicken einfach Bewerbungen raus und hoffen auf das Beste. Das
-              Problem: Ohne Strategie, ohne richtigen Lebenslauf und ohne überzeugendes
-              Anschreiben landet die Bewerbung direkt im Papierkorb.
+              Viele Leute schicken einfach Bewerbungen raus und hoffen auf das Beste. Das Problem:
+              Ohne Strategie, ohne richtigen Lebenslauf und ohne überzeugendes Anschreiben landet
+              die Bewerbung direkt im Papierkorb.
             </p>
             <p className="text-warm-500 leading-relaxed mb-4 text-lg">
               Als Bewerbungscoach schaue ich mir deine gesamte Situation an. Was willst du
-              erreichen? Was kannst du? Was sucht der Arbeitgeber? Und wie bringen wir das
-              zusammen?
+              erreichen? Was kannst du? Was sucht der Arbeitgeber? Und wie bringen wir das zusammen?
             </p>
             <p className="text-warm-500 leading-relaxed text-lg">
-              Das Ergebnis: Eine Bewerbung, die nicht nur professionell aussieht, sondern
-              wirklich zu dir passt – und die ankommt.
+              Das Ergebnis: Eine Bewerbung, die nicht nur professionell aussieht, sondern wirklich
+              zu dir passt – und die ankommt.
             </p>
           </div>
           <div className="space-y-4">
@@ -115,12 +113,21 @@ export default function BewerbungscoachPage() {
                 className="card p-5 group hover:border-brand-200 transition-colors flex gap-4 items-start cursor-pointer"
               >
                 <div className="w-10 h-10 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-brand-600 group-hover:text-white transition-colors">
-                  <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <svg
+                    width="20"
+                    height="20"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    viewBox="0 0 24 24"
+                  >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-display font-bold text-lg text-warm-900 mb-1">{item.title}</h3>
+                  <h3 className="font-display font-bold text-lg text-warm-900 mb-1">
+                    {item.title}
+                  </h3>
                   <p className="text-warm-500 text-sm leading-relaxed">{item.desc}</p>
                 </div>
               </div>
@@ -137,10 +144,11 @@ export default function BewerbungscoachPage() {
               Für wen ist Bewerbungscoaching gedacht?
             </h2>
             <p className="text-warm-500 text-lg max-w-2xl mx-auto">
-              Jeder verdient eine Chance auf den richtigen Job. Schreib mir, egal in welcher Situation.
+              Jeder verdient eine Chance auf den richtigen Job. Schreib mir, egal in welcher
+              Situation.
             </p>
           </div>
-          
+
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
@@ -187,19 +195,31 @@ export default function BewerbungscoachPage() {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
             <p className="overline mb-2">Du hast Fragen?</p>
-            <h2 className="font-display font-black text-4xl text-warm-900">
-              Häufige Fragen
-            </h2>
+            <h2 className="font-display font-black text-4xl text-warm-900">Häufige Fragen</h2>
           </div>
-          
+
           <div className="space-y-4">
             {faqs.map((faq) => (
-              <details key={faq.q} className="group bg-white border border-warm-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer [&_summary::-webkit-details-marker]:hidden">
+              <details
+                key={faq.q}
+                className="group bg-white border border-warm-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer [&_summary::-webkit-details-marker]:hidden"
+              >
                 <summary className="flex items-center justify-between p-6 font-semibold text-warm-900 text-lg outline-none focus-visible:ring-2 focus-visible:ring-brand-500">
                   {faq.q}
                   <span className="ml-4 flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-warm-50 text-brand-600 group-open:rotate-180 transition-transform duration-300">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    <svg
+                      width="20"
+                      height="20"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                      />
                     </svg>
                   </span>
                 </summary>
@@ -221,7 +241,8 @@ export default function BewerbungscoachPage() {
           aria-hidden
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
           }}
         />
         <div className="relative max-w-2xl mx-auto">

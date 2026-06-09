@@ -27,10 +27,7 @@ export default async function AdminDashboard() {
             { label: 'Blog-Beiträge gesamt', value: blogCount },
             { label: 'Veröffentlicht', value: publishedCount },
           ].map((stat) => (
-            <div
-              key={stat.label}
-              className="bg-white border border-gray-200 rounded-xl p-5"
-            >
+            <div key={stat.label} className="bg-white border border-gray-200 rounded-xl p-5">
               <p className="text-3xl font-extrabold tracking-tight mb-1">{stat.value}</p>
               <p className="text-xs text-neutral-500">{stat.label}</p>
             </div>

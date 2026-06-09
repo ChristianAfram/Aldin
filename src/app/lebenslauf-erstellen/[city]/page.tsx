@@ -84,15 +84,16 @@ export default function CityLebenslaufPage({ params }: Props) {
             </h2>
             <p className="text-warm-500 leading-relaxed mb-5 text-lg">{city.jobMarket}</p>
             <p className="text-warm-500 leading-relaxed text-lg">
-              Genau deshalb ist ein professionell gestalteter Lebenslauf in {city.name} kein
-              Luxus, sondern Pflicht. Ich helfe dir, diesen ersten Eindruck optimal zu
-              gestalten.
+              Genau deshalb ist ein professionell gestalteter Lebenslauf in {city.name} kein Luxus,
+              sondern Pflicht. Ich helfe dir, diesen ersten Eindruck optimal zu gestalten.
             </p>
           </div>
           <div className="card p-8 bg-white border border-warm-200">
-            <h3 className="font-display font-bold text-xl text-warm-900 mb-3">Branchen in {city.name}</h3>
+            <h3 className="font-display font-bold text-xl text-warm-900 mb-3">
+              Branchen in {city.name}
+            </h3>
             <p className="text-sm text-warm-500 mb-6 leading-relaxed">{city.industries}</p>
-            
+
             <h3 className="font-display font-bold text-lg text-warm-900 mb-4">Was du bekommst</h3>
             <ul className="space-y-3">
               {[
@@ -103,8 +104,19 @@ export default function CityLebenslaufPage({ params }: Props) {
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-sm text-warm-600">
                   <span className="text-brand-600 shrink-0 mt-0.5">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    <svg
+                      width="20"
+                      height="20"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M4.5 12.75l6 6 9-13.5"
+                      />
                     </svg>
                   </span>
                   {item}
@@ -125,14 +137,29 @@ export default function CityLebenslaufPage({ params }: Props) {
 
           <div className="grid sm:grid-cols-3 gap-8">
             {[
-              { step: '01', title: 'WhatsApp schreiben', desc: `Schreib mir kurz, worauf du dich in ${city.name} bewirbst.` },
-              { step: '02', title: 'Lebenslauf erhalten', desc: 'In 1–2 Tagen bekommst du deinen fertigen Lebenslauf.' },
-              { step: '03', title: 'Job bekommen', desc: 'Bewerbung abschicken. Bezahlt wird nach Zufriedenheit.' },
+              {
+                step: '01',
+                title: 'WhatsApp schreiben',
+                desc: `Schreib mir kurz, worauf du dich in ${city.name} bewirbst.`,
+              },
+              {
+                step: '02',
+                title: 'Lebenslauf erhalten',
+                desc: 'In 1–2 Tagen bekommst du deinen fertigen Lebenslauf.',
+              },
+              {
+                step: '03',
+                title: 'Job bekommen',
+                desc: 'Bewerbung abschicken. Bezahlt wird nach Zufriedenheit.',
+              },
             ].map((item, i) => (
               <div key={item.step} className="relative">
                 {/* connector line */}
                 {i < 2 && (
-                  <div className="hidden sm:block absolute top-6 left-full w-full h-px bg-warm-200 z-0 -translate-x-4" aria-hidden />
+                  <div
+                    className="hidden sm:block absolute top-6 left-full w-full h-px bg-warm-200 z-0 -translate-x-4"
+                    aria-hidden
+                  />
                 )}
                 <div className="w-12 h-12 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center font-display font-black text-brand-600 text-xl mb-4 relative z-10 shadow-sm">
                   {item.step}

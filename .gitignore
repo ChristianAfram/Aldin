@@ -16,6 +16,7 @@ data/
 # Build
 build/
 dist/
+tsconfig.tsbuildinfo
 
 # OS
 .DS_Store

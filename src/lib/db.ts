@@ -80,7 +80,7 @@ function now(): string {
 export const products = {
   findAll(): Product[] {
     return ensureDbFile().products.sort(
-      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
     )
   },
 
@@ -131,7 +131,7 @@ export const products = {
 export const blogPosts = {
   findAll(): BlogPost[] {
     return ensureDbFile().blog_posts.sort(
-      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
     )
   },
 

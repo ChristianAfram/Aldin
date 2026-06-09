@@ -10,13 +10,13 @@ const config: Config = {
         'wa-dark': '#1ebe57',
         // Brand – navy-blue inspired by Fritsch but warmer/darker
         brand: {
-          50:  '#eef3fa',
+          50: '#eef3fa',
           100: '#d5e3f4',
           200: '#adc7e9',
           300: '#78a4d6',
           400: '#4a81c0',
           500: '#2c63a8',
-          600: '#1c4f8b',  // primary
+          600: '#1c4f8b', // primary
           700: '#173f70',
           800: '#0f2b4e',
           900: '#091a31',
@@ -30,7 +30,7 @@ const config: Config = {
         },
         // Warm neutral (not the generic Tailwind gray)
         warm: {
-          50:  '#fafaf7',
+          50: '#fafaf7',
           100: '#f3f3ef',
           200: '#e8e8e2',
           300: '#d4d4cc',
@@ -43,7 +43,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans:    ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
         display: ['var(--font-rubik)', 'system-ui', 'sans-serif'],
       },
       letterSpacing: {
@@ -58,12 +58,12 @@ const config: Config = {
       },
       keyframes: {
         fadeUp: {
-          '0%':   { opacity: '0', transform: 'translateY(16px)' },
+          '0%': { opacity: '0', transform: 'translateY(16px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         waPing: {
           '0%, 100%': { transform: 'scale(1)', opacity: '1' },
-          '50%':      { transform: 'scale(1.08)', opacity: '0.9' },
+          '50%': { transform: 'scale(1.08)', opacity: '0.9' },
         },
         fadeIn: {
           '0%': { opacity: '0' },

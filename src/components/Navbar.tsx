@@ -6,16 +6,16 @@ import { usePathname } from 'next/navigation'
 import { WA_LINK } from '@/lib/config'
 
 const navLinks = [
-  { href: '/',                label: 'Lebenslauf erstellen' },
+  { href: '/', label: 'Lebenslauf erstellen' },
   { href: '/bewerbungscoach', label: 'Bewerbungscoach' },
-  { href: '/produkte',        label: 'Produkte' },
-  { href: '/blog',            label: 'Blog' },
+  { href: '/produkte', label: 'Produkte' },
+  { href: '/blog', label: 'Blog' },
 ]
 
 export default function Navbar() {
-  const [open, setOpen]       = useState(false)
+  const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const pathname              = usePathname()
+  const pathname = usePathname()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16)
@@ -42,9 +42,7 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               className={`text-sm font-medium transition-colors ${
-                pathname === link.href
-                  ? 'text-brand-600'
-                  : 'text-warm-500 hover:text-warm-900'
+                pathname === link.href ? 'text-brand-600' : 'text-warm-500 hover:text-warm-900'
               }`}
             >
               {link.label}
@@ -69,16 +67,22 @@ export default function Navbar() {
           aria-expanded={open}
           aria-controls="mobile-menu"
         >
-          <span className={`block w-5 h-0.5 bg-warm-800 mb-1.5 transition-[transform,opacity] duration-200 ${open ? 'rotate-45 translate-y-2' : ''}`} />
-          <span className={`block w-5 h-0.5 bg-warm-800 mb-1.5 transition-[transform,opacity] duration-200 ${open ? 'opacity-0' : ''}`} />
-          <span className={`block w-5 h-0.5 bg-warm-800 transition-[transform,opacity] duration-200 ${open ? '-rotate-45 -translate-y-2' : ''}`} />
+          <span
+            className={`block w-5 h-0.5 bg-warm-800 mb-1.5 transition-[transform,opacity] duration-200 ${open ? 'rotate-45 translate-y-2' : ''}`}
+          />
+          <span
+            className={`block w-5 h-0.5 bg-warm-800 mb-1.5 transition-[transform,opacity] duration-200 ${open ? 'opacity-0' : ''}`}
+          />
+          <span
+            className={`block w-5 h-0.5 bg-warm-800 transition-[transform,opacity] duration-200 ${open ? '-rotate-45 -translate-y-2' : ''}`}
+          />
         </button>
       </div>
 
       {/* Mobile menu */}
       <div
         id="mobile-menu"
-        {...(!open ? ({ inert: '' } as any) : {})}
+        aria-hidden={!open}
         className={`md:hidden overflow-hidden transition-[max-height] duration-200 ${
           open ? 'max-h-96' : 'max-h-0'
         }`}
@@ -91,6 +95,7 @@ export default function Navbar() {
               className={`text-sm font-medium transition-colors ${
                 pathname === link.href ? 'text-brand-600' : 'text-warm-700'
               }`}
+              tabIndex={open ? undefined : -1}
               onClick={() => setOpen(false)}
             >
               {link.label}
@@ -100,6 +105,7 @@ export default function Navbar() {
             href={WA_LINK}
             target="_blank"
             rel="noopener noreferrer"
+            tabIndex={open ? undefined : -1}
             className="bg-brand-600 text-white px-5 py-3 rounded-xl text-sm font-semibold text-center"
           >
             Auf WhatsApp anfragen

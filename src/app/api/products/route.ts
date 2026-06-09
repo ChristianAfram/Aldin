@@ -29,7 +29,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Name ist erforderlich.' }, { status: 400 })
     }
 
-    const product = db.create({ name, description: description || '', price: price || '', category: category || '' })
+    const product = db.create({
+      name,
+      description: description || '',
+      price: price || '',
+      category: category || '',
+    })
     return NextResponse.json(product, { status: 201 })
   } catch (err) {
     console.error(err)

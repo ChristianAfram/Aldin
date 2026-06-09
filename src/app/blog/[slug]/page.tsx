@@ -36,7 +36,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   try {
     const found = blogPosts.findBySlug(params.slug)
-    post = (found && found.published) ? found : null
+    post = found && found.published ? found : null
   } catch {
     notFound()
   }
@@ -52,8 +52,18 @@ export default async function BlogPostPage({ params }: Props) {
           href="/blog"
           className="inline-flex items-center text-sm font-bold text-warm-400 hover:text-brand-600 transition-colors mb-8 group"
         >
-          <svg className="mr-2 w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          <svg
+            className="mr-2 w-4 h-4 group-hover:-translate-x-1 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+            />
           </svg>
           Zurück zum Blog
         </Link>
@@ -75,7 +85,8 @@ export default async function BlogPostPage({ params }: Props) {
             Brauchst du Hilfe bei deiner Bewerbung?
           </h2>
           <p className="text-warm-500 mb-6 leading-relaxed">
-            Ein starker Lebenslauf ist oft der fehlende Schlüssel zur Einladung. Schreib mir auf WhatsApp – kostenloses Erstgespräch, ganz ohne Verpflichtung.
+            Ein starker Lebenslauf ist oft der fehlende Schlüssel zur Einladung. Schreib mir auf
+            WhatsApp – kostenloses Erstgespräch, ganz ohne Verpflichtung.
           </p>
           <WaButton />
         </div>
