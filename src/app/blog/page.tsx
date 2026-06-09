@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: 'Blog – Bewerbungstipps für Azubis und Studierende',
   description:
     'Kostenlose Bewerbungstipps, Lebenslauf-Ratgeber und Karriere-Ratschläge für junge Bewerber.',
+  alternates: {
+    canonical: '/blog',
+  },
 }
 
 export const revalidate = 60

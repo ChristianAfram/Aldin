@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import WaButton from '@/components/WaButton'
+import JsonLd from '@/components/JsonLd'
 import { cities } from '@/lib/cities'
 
 export const metadata: Metadata = {
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
   description:
     'Lebenslauf erstellen lassen von einem erfahrenen Bewerbungsprofi. Fuer Azubis, Studierende und Berufseinsteiger. Kostenlose Erstberatung.',
   alternates: {
-    canonical: 'https://aldinb.de',
+    canonical: '/',
   },
 }
 
@@ -35,9 +36,20 @@ const faqs = [
   },
 ]
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.q,
+    acceptedAnswer: { '@type': 'Answer', text: faq.a },
+  })),
+}
+
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={faqJsonLd} />
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-white pt-16 pb-20 px-5">
         <div

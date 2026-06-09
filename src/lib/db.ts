@@ -64,7 +64,7 @@ async function updateRow(
   table: 'products' | 'blog_posts',
   id: number,
   data: Record<string, unknown>,
-  extraSet = ''
+  extraSet = '',
 ): Promise<Row | null> {
   const keys = Object.keys(data).filter((key) => data[key] !== undefined)
   if (keys.length === 0 && !extraSet) return null
@@ -74,7 +74,7 @@ async function updateRow(
   params.push(id)
   const rows = (await sql().query(
     `UPDATE ${table} SET ${assignments.join(', ')} WHERE id = $${params.length} RETURNING *`,
-    params
+    params,
   )) as Row[]
   return rows[0] ?? null
 }
@@ -121,7 +121,7 @@ export const products = {
 
   async update(
     id: number,
-    data: Partial<Omit<Product, 'id' | 'created_at'>>
+    data: Partial<Omit<Product, 'id' | 'created_at'>>,
   ): Promise<Product | null> {
     const hasChanges = Object.values(data).some((value) => value !== undefined)
     if (!hasChanges) return (await this.findById(id)) ?? null
@@ -198,7 +198,7 @@ export const blogPosts = {
 
   async update(
     id: number,
-    data: Partial<Omit<BlogPost, 'id' | 'created_at'>>
+    data: Partial<Omit<BlogPost, 'id' | 'created_at'>>,
   ): Promise<BlogPost | null> {
     try {
       const row = await updateRow('blog_posts', id, data, '"updated_at" = NOW()')

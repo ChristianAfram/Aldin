@@ -2,6 +2,8 @@ export const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? '49DEINEHANDYNUMME
 export const WA_MESSAGE = encodeURIComponent('Hey Aldin, ich brauche Hilfe mit meinem Lebenslauf!')
 export const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`
 
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aldinb.de').replace(/\/$/, '')
+
 export const SITE_NAME = 'Aldin B.'
 export const SITE_TAGLINE = 'Bewerbungsservice'
 export const SITE_DESCRIPTION =

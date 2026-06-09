@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import WaButton from '@/components/WaButton'
 import { cities, getCityBySlug } from '@/lib/cities'
+import JsonLd from '@/components/JsonLd'
+import { SITE_NAME, SITE_URL } from '@/lib/config'
 
 type Props = { params: { city: string } }
 
@@ -18,7 +20,7 @@ export function generateMetadata({ params }: Props): Metadata {
     title: `Lebenslauf erstellen in ${city.name} – Professionell & schnell`,
     description: `Lebenslauf erstellen in ${city.name}: Individueller, professioneller Lebenslauf für Azubis, Studierende und Berufseinsteiger in ${city.name}. Jetzt kostenlos anfragen.`,
     alternates: {
-      canonical: `https://aldinb.de/lebenslauf-erstellen/${city.slug}`,
+      canonical: `/lebenslauf-erstellen/${city.slug}`,
     },
   }
 }
@@ -29,8 +31,19 @@ export default function CityLebenslaufPage({ params }: Props) {
 
   const otherCities = cities.filter((c) => c.slug !== city.slug).slice(0, 6)
 
+  const serviceJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: `Lebenslauf-Erstellung in ${city.name}`,
+    serviceType: 'Lebenslauf-Erstellung',
+    areaServed: { '@type': 'City', name: city.name },
+    provider: { '@type': 'ProfessionalService', name: SITE_NAME, url: SITE_URL },
+    url: `${SITE_URL}/lebenslauf-erstellen/${city.slug}`,
+  }
+
   return (
     <>
+      <JsonLd data={serviceJsonLd} />
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-white pt-16 pb-20 px-5">
         <div

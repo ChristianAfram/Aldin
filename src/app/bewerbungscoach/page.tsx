@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import WaButton from '@/components/WaButton'
+import JsonLd from '@/components/JsonLd'
 import { cities } from '@/lib/cities'
 
 export const metadata: Metadata = {
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
   description:
     'Dein persönlicher Bewerbungscoach: Lebenslauf, Anschreiben, Bewerbungsstrategie. Für Azubis und Studierende in ganz Deutschland. Kostenloses Erstgespräch.',
   alternates: {
-    canonical: 'https://aldinb.de/bewerbungscoach',
+    canonical: '/bewerbungscoach',
   },
 }
 
@@ -35,9 +36,20 @@ const faqs = [
   },
 ]
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.q,
+    acceptedAnswer: { '@type': 'Answer', text: faq.a },
+  })),
+}
+
 export default function BewerbungscoachPage() {
   return (
     <>
+      <JsonLd data={faqJsonLd} />
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section className="pt-16 pb-20 px-5 bg-white relative overflow-hidden">
         <div

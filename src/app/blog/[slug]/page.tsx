@@ -5,10 +5,22 @@ import { renderMarkdown } from '@/lib/markdown'
 import { blogPosts } from '@/lib/db'
 import type { BlogPost } from '@/lib/db'
 import WaButton from '@/components/WaButton'
+import JsonLd from '@/components/JsonLd'
+import { SITE_NAME, SITE_URL } from '@/lib/config'
 
 type Props = { params: { slug: string } }
 
 export const revalidate = 60
+
+export async function generateStaticParams() {
+  try {
+    const posts = await blogPosts.findPublished()
+    return posts.map((post) => ({ slug: post.slug }))
+  } catch {
+    // DB nicht erreichbar (z.B. Build ohne DATABASE_URL) – Seiten entstehen on demand.
+    return []
+  }
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
@@ -17,6 +29,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title: post.title,
       description: post.excerpt || undefined,
+      alternates: {
+        canonical: `/blog/${post.slug}`,
+      },
+      openGraph: {
+        type: 'article',
+        publishedTime: post.created_at,
+        modifiedTime: post.updated_at,
+      },
     }
   } catch {
     return {}
@@ -45,8 +65,20 @@ export default async function BlogPostPage({ params }: Props) {
 
   const htmlContent = renderMarkdown(post.content)
 
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt || undefined,
+    datePublished: post.created_at,
+    dateModified: post.updated_at,
+    author: { '@type': 'Person', name: SITE_NAME },
+    mainEntityOfPage: `${SITE_URL}/blog/${post.slug}`,
+  }
+
   return (
     <>
+      <JsonLd data={articleJsonLd} />
       <article className="max-w-3xl mx-auto px-5 py-16 md:py-24">
         <Link
           href="/blog"

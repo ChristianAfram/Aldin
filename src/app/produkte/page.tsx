@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     'Finde das passende Paket für deine Bewerbung: Vom Basis-Lebenslauf bis zur Premium-Bewerbung inklusive Anschreiben.',
   alternates: {
-    canonical: 'https://aldinb.de/produkte',
+    canonical: '/produkte',
   },
 }
 
