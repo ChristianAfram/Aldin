@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Rubik } from 'next/font/google'
 import './globals.css'
+import { Analytics } from '@vercel/analytics/react'
 import PublicLayout from '@/components/PublicLayout'
 import JsonLd from '@/components/JsonLd'
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, WA_LINK } from '@/lib/config'
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Zum Inhalt springen
         </a>
         <PublicLayout>{children}</PublicLayout>
+        <Analytics />
       </body>
     </html>
   )
