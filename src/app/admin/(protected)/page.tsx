@@ -7,8 +7,8 @@ export default async function AdminDashboard() {
   let publishedCount = 0
 
   try {
-    productCount = products.findActive().length
-    const allPosts = blogPosts.findAll()
+    productCount = (await products.findActive()).length
+    const allPosts = await blogPosts.findAll()
     blogCount = allPosts.length
     publishedCount = allPosts.filter((p) => p.published).length
   } catch {

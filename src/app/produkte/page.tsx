@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { products } from '@/lib/db'
+import type { Product } from '@/lib/db'
 import WaButton from '@/components/WaButton'
 
 export const metadata: Metadata = {
@@ -11,12 +12,12 @@ export const metadata: Metadata = {
   },
 }
 
-export const revalidate = 0 // always fetch fresh from local JSON DB
+export const revalidate = 60
 
 export default async function ProduktePage() {
-  let activeProducts: ReturnType<typeof products.findActive> = []
+  let activeProducts: Product[] = []
   try {
-    activeProducts = products.findActive()
+    activeProducts = await products.findActive()
   } catch {
     // fail silently if DB not initialized
   }

@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   if (all && !session) return unauthorized()
 
-  const result = all ? db.findAll() : db.findActive()
+  const result = all ? await db.findAll() : await db.findActive()
   return NextResponse.json(result)
 }
 
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Name ist erforderlich.' }, { status: 400 })
     }
 
-    const product = db.create({
+    const product = await db.create({
       name,
       description: description || '',
       price: price || '',
@@ -54,7 +54,7 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: 'ID erforderlich.' }, { status: 400 })
     }
 
-    const updated = db.update(Number(id), {
+    const updated = await db.update(Number(id), {
       ...(name !== undefined && { name }),
       ...(description !== undefined && { description }),
       ...(price !== undefined && { price }),
@@ -80,7 +80,7 @@ export async function DELETE(req: NextRequest) {
 
   try {
     const { id } = await req.json()
-    db.delete(Number(id))
+    await db.delete(Number(id))
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error(err)

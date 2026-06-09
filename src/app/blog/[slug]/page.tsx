@@ -12,7 +12,7 @@ export const revalidate = 60
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
-    const post = blogPosts.findBySlug(params.slug)
+    const post = await blogPosts.findBySlug(params.slug)
     if (!post || !post.published) return {}
     return {
       title: post.title,
@@ -35,7 +35,7 @@ export default async function BlogPostPage({ params }: Props) {
   let post: BlogPost | null = null
 
   try {
-    const found = blogPosts.findBySlug(params.slug)
+    const found = await blogPosts.findBySlug(params.slug)
     post = found && found.published ? found : null
   } catch {
     notFound()

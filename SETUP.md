@@ -43,6 +43,10 @@ npm run seed
 
 Das Skript erstellt alle Tabellen und den Admin-Benutzer.
 
+**Hinweis:** `ADMIN_EMAIL` und `ADMIN_PASSWORD` werden nur vom Seed-Script gelesen.
+Der Login prueft gegen den bcrypt-Hash in der Datenbank – nach dem Seed muessen
+diese beiden Variablen auf Vercel nicht gesetzt sein.
+
 ## Schritt 5: Lokal testen
 
 ```bash
@@ -69,8 +73,7 @@ src/
   app/
     page.tsx                          → Startseite
     lebenslauf-erstellen/
-      page.tsx                        → Hauptseite (rankt fuer "Lebenslauf erstellen")
-      [city]/page.tsx                 → 10 Stadtseiten
+      [city]/page.tsx                 → 10 Stadtseiten (Hauptkeyword rankt ueber die Startseite)
     bewerbungscoach/
       page.tsx                        → Hauptseite (rankt fuer "Bewerbungscoach")
       [city]/page.tsx                 → 10 Stadtseiten

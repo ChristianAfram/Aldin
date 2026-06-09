@@ -13,6 +13,7 @@ Aldin is a German-language website (career coaching: Bewerbungscoach, Lebenslauf
 - Next.js 14 (App Router, `src/app/`)
 - TypeScript
 - Tailwind CSS
+- Neon PostgreSQL via `@neondatabase/serverless` (`src/lib/db.ts`; schema created by `npm run seed`, requires `DATABASE_URL`)
 - Auth via `jose` + `bcryptjs` (see `src/lib/auth.ts`, `middleware.ts`)
 
 ## Structure

@@ -23,7 +23,7 @@ export default async function BlogPage() {
   let posts: BlogPost[] = []
 
   try {
-    posts = blogPosts.findPublished() as BlogPost[]
+    posts = (await blogPosts.findPublished()) as BlogPost[]
   } catch {
     // DB not yet initialized
   }

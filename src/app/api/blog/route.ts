@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   if (all && !session) return unauthorized()
 
-  const result = all ? db.findAll() : db.findPublished()
+  const result = all ? await db.findAll() : await db.findPublished()
   return NextResponse.json(result)
 }
 
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Titel und Slug sind erforderlich.' }, { status: 400 })
     }
 
-    const post = db.create({
+    const post = await db.create({
       title,
       slug,
       excerpt: excerpt || '',
@@ -58,7 +58,7 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: 'ID erforderlich.' }, { status: 400 })
     }
 
-    const updated = db.update(Number(id), {
+    const updated = await db.update(Number(id), {
       ...(title !== undefined && { title }),
       ...(slug !== undefined && { slug }),
       ...(excerpt !== undefined && { excerpt }),
@@ -72,6 +72,9 @@ export async function PATCH(req: NextRequest) {
 
     return NextResponse.json(updated)
   } catch (err) {
+    if (err instanceof Error && err.message === 'UNIQUE_SLUG') {
+      return NextResponse.json({ error: 'Dieser Slug ist bereits vergeben.' }, { status: 409 })
+    }
     console.error(err)
     return NextResponse.json({ error: 'Server-Fehler.' }, { status: 500 })
   }
@@ -84,7 +87,7 @@ export async function DELETE(req: NextRequest) {
 
   try {
     const { id } = await req.json()
-    db.delete(Number(id))
+    await db.delete(Number(id))
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error(err)
