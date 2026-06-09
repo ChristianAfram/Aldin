@@ -84,7 +84,8 @@ async function seed() {
 
   console.log('Erstelle Admin-Benutzer...')
   const hash = await bcrypt.hash(password, 12)
-  await adminUsers.upsert(email, hash)
+  // Lowercased to match the login route, which normalizes the email input.
+  await adminUsers.upsert(email.trim().toLowerCase(), hash)
 
   console.log(`✓ Admin-Benutzer "${email}" wurde erstellt / aktualisiert.`)
   console.log('✓ Seed abgeschlossen.')

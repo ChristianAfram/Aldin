@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { marked } from 'marked'
+import { renderMarkdown } from '@/lib/markdown'
 import { blogPosts } from '@/lib/db'
 import type { BlogPost } from '@/lib/db'
 import WaButton from '@/components/WaButton'
@@ -43,7 +43,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   if (!post) notFound()
 
-  const htmlContent = String(marked.parse(post.content || ''))
+  const htmlContent = renderMarkdown(post.content)
 
   return (
     <>
